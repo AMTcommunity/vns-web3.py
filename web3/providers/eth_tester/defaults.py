@@ -161,54 +161,54 @@ API_ENDPOINTS = {
         'peerCount': not_implemented,
         'listening': not_implemented,
     },
-    'eth': {
+    'vns': {
         'protocolVersion': not_implemented,
         'syncing': not_implemented,
         'coinbase': compose(
             operator.itemgetter(0),
-            call_eth_tester('get_accounts'),
+            call_vns_tester('get_accounts'),
         ),
         'mining': not_implemented,
         'hashrate': not_implemented,
         'gasPrice': not_implemented,
-        'accounts': call_eth_tester('get_accounts'),
+        'accounts': call_vns_tester('get_accounts'),
         'blockNumber': compose(
             operator.itemgetter('number'),
-            call_eth_tester('get_block_by_number', fn_kwargs={'block_number': 'latest'}),
+            call_vns_tester('get_block_by_number', fn_kwargs={'block_number': 'latest'}),
         ),
-        'getBalance': call_eth_tester('get_balance'),
+        'getBalance': call_vns_tester('get_balance'),
         'getStorageAt': not_implemented,
-        'getTransactionCount': call_eth_tester('get_nonce'),
+        'getTransactionCount': call_vns_tester('get_nonce'),
         'getBlockTransactionCountByHash': null_if_block_not_found(compose(
             len,
             operator.itemgetter('transactions'),
-            call_eth_tester('get_block_by_hash'),
+            call_vns_tester('get_block_by_hash'),
         )),
         'getBlockTransactionCountByNumber': null_if_block_not_found(compose(
             len,
             operator.itemgetter('transactions'),
-            call_eth_tester('get_block_by_number'),
+            call_vns_tester('get_block_by_number'),
         )),
         'getUncleCountByBlockHash': null_if_block_not_found(compose(
             len,
             operator.itemgetter('uncles'),
-            call_eth_tester('get_block_by_hash'),
+            call_vns_tester('get_block_by_hash'),
         )),
         'getUncleCountByBlockNumber': null_if_block_not_found(compose(
             len,
             operator.itemgetter('uncles'),
-            call_eth_tester('get_block_by_number'),
+            call_vns_tester('get_block_by_number'),
         )),
-        'getCode': call_eth_tester('get_code'),
+        'getCode': call_vns_tester('get_code'),
         'sign': not_implemented,
-        'sendTransaction': call_eth_tester('send_transaction'),
-        'sendRawTransaction': call_eth_tester('send_raw_transaction'),
-        'call': call_eth_tester('call'),  # TODO: untested
-        'estimateGas': call_eth_tester('estimate_gas'),  # TODO: untested
-        'getBlockByHash': null_if_block_not_found(call_eth_tester('get_block_by_hash')),
-        'getBlockByNumber': null_if_block_not_found(call_eth_tester('get_block_by_number')),
+        'sendTransaction': call_vns_tester('send_transaction'),
+        'sendRawTransaction': call_vns_tester('send_raw_transaction'),
+        'call': call_vns_tester('call'),  # TODO: untested
+        'estimateGas': call_vns_tester('estimate_gas'),  # TODO: untested
+        'getBlockByHash': null_if_block_not_found(call_vns_tester('get_block_by_hash')),
+        'getBlockByNumber': null_if_block_not_found(call_vns_tester('get_block_by_number')),
         'getTransactionByHash': null_if_transaction_not_found(
-            call_eth_tester('get_transaction_by_hash')
+            call_vns_tester('get_transaction_by_hash')
         ),
         'getTransactionByBlockHashAndIndex': get_transaction_by_block_hash_and_index,
         'getTransactionByBlockNumberAndIndex': get_transaction_by_block_number_and_index,
@@ -217,7 +217,7 @@ API_ENDPOINTS = {
                 compose(is_null, operator.itemgetter('block_number')),
                 static_return(None),
             ),
-            call_eth_tester('get_transaction_receipt'),
+            call_vns_tester('get_transaction_receipt'),
         )),
         'getUncleByBlockHashAndIndex': not_implemented,
         'getUncleByBlockNumberAndIndex': not_implemented,
@@ -226,18 +226,18 @@ API_ENDPOINTS = {
         'compileSolidity': not_implemented,
         'compileSerpent': not_implemented,
         'newFilter': create_log_filter,
-        'newBlockFilter': call_eth_tester('create_block_filter'),
-        'newPendingTransactionFilter': call_eth_tester('create_pending_transaction_filter'),
+        'newBlockFilter': call_vns_tester('create_block_filter'),
+        'newPendingTransactionFilter': call_vns_tester('create_pending_transaction_filter'),
         'uninstallFilter': excepts(
             FilterNotFound,
             compose(
                 is_null,
-                call_eth_tester('delete_filter'),
+                call_vns_tester('delete_filter'),
             ),
             static_return(False),
         ),
-        'getFilterChanges': null_if_filter_not_found(call_eth_tester('get_only_filter_changes')),
-        'getFilterLogs': null_if_filter_not_found(call_eth_tester('get_all_filter_logs')),
+        'getFilterChanges': null_if_filter_not_found(call_vns_tester('get_only_filter_changes')),
+        'getFilterLogs': null_if_filter_not_found(call_vns_tester('get_all_filter_logs')),
         'getLogs': get_logs,
         'getWork': not_implemented,
         'submitWork': not_implemented,
@@ -310,24 +310,24 @@ API_ENDPOINTS = {
     },
     'personal': {
         'ecRecover': not_implemented,
-        'importRawKey': call_eth_tester('add_account'),
-        'listAccounts': call_eth_tester('get_accounts'),
+        'importRawKey': call_vns_tester('add_account'),
+        'listAccounts': call_vns_tester('get_accounts'),
         'lockAccount': excepts(
             ValidationError,
-            compose(static_return(True), call_eth_tester('lock_account')),
+            compose(static_return(True), call_vns_tester('lock_account')),
             static_return(False),
         ),
         'newAccount': create_new_account,
         'unlockAccount': excepts(
             ValidationError,
-            compose(static_return(True), call_eth_tester('unlock_account')),
+            compose(static_return(True), call_vns_tester('unlock_account')),
             static_return(False),
         ),
         'sendTransaction': personal_send_transaction,
         'sign': not_implemented,
     },
     'testing': {
-        'timeTravel': call_eth_tester('time_travel'),
+        'timeTravel': call_vns_tester('time_travel'),
     },
     'txpool': {
         'content': not_implemented,
@@ -335,8 +335,8 @@ API_ENDPOINTS = {
         'status': not_implemented,
     },
     'evm': {
-        'mine': call_eth_tester('mine_blocks'),
-        'revert': call_eth_tester('revert_to_snapshot'),
-        'snapshot': call_eth_tester('take_snapshot'),
+        'mine': call_vns_tester('mine_blocks'),
+        'revert': call_vns_tester('revert_to_snapshot'),
+        'snapshot': call_vns_tester('take_snapshot'),
     },
 }

@@ -14,7 +14,7 @@ setup(
     long_description_markdown_filename='README.md',
     author='Piper Merriam',
     author_email='pipermerriam@gmail.com',
-    url='https://github.com/ethereum/web3.py',
+    url='https://github.com/AMTcommunity/vns-web3.py',
     include_package_data=True,
     install_requires=[
         "toolz>=0.9.0,<1.0.0;implementation_name=='pypy'",

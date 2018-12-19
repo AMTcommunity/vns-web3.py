@@ -102,11 +102,11 @@ class Filter:
         return filter(self.is_valid_entry, entries)
 
     def get_new_entries(self):
-        log_entries = self._filter_valid_entries(self.web3.eth.getFilterChanges(self.filter_id))
+        log_entries = self._filter_valid_entries(self.web3.vns.getFilterChanges(self.filter_id))
         return self._format_log_entries(log_entries)
 
     def get_all_entries(self):
-        log_entries = self._filter_valid_entries(self.web3.eth.getFilterLogs(self.filter_id))
+        log_entries = self._filter_valid_entries(self.web3.vns.getFilterLogs(self.filter_id))
         return self._format_log_entries(log_entries)
 
     def _format_log_entries(self, log_entries=None):

@@ -40,7 +40,7 @@ class ParityModuleTest:
         assert trace[0]['action']['from'] == add_0x_prefix(parity_fixture_data['coinbase'])
 
     def test_trace_call(self, web3, math_contract):
-        coinbase = web3.eth.coinbase
+        coinbase = web3.vns.coinbase
         txn_params = math_contract._prepare_transaction(
             fn_name='add',
             fn_args=(7, 11),
@@ -52,8 +52,8 @@ class ParityModuleTest:
         result = hex_to_integer(trace['output'])
         assert result == 18
 
-    def test_eth_call_with_0_result(self, web3, math_contract):
-        coinbase = web3.eth.coinbase
+    def test_vns_call_with_0_result(self, web3, math_contract):
+        coinbase = web3.vns.coinbase
         txn_params = math_contract._prepare_transaction(
             fn_name='add',
             fn_args=(0, 0),

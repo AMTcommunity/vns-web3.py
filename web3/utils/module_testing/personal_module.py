@@ -53,7 +53,7 @@ class PersonalModuleTest:
                                       web3,
                                       unlockable_account,
                                       unlockable_account_pw):
-        assert web3.eth.getBalance(unlockable_account) > web3.toWei(1, 'ether')
+        assert web3.vns.getBalance(unlockable_account) > web3.toWei(1, 'ether')
         txn_params = {
             'from': unlockable_account,
             'to': unlockable_account,
@@ -63,7 +63,7 @@ class PersonalModuleTest:
         }
         txn_hash = web3.personal.sendTransaction(txn_params, unlockable_account_pw)
         assert txn_hash
-        transaction = web3.eth.getTransaction(txn_hash)
+        transaction = web3.vns.getTransaction(txn_hash)
         assert transaction['from'] == txn_params['from']
         assert transaction['to'] == txn_params['to']
         assert transaction['gas'] == txn_params['gas']

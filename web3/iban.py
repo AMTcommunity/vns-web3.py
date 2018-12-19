@@ -90,7 +90,7 @@ class IsValid:
         if not is_string(iban_address):
             return False
 
-        if re.match(r"^XE[0-9]{2}(ETH[0-9A-Z]{13}|[0-9A-Z]{30,31})$", iban_address) and \
+        if re.match(r"^XE[0-9]{2}(VNS[0-9A-Z]{13}|[0-9A-Z]{30,31})$", iban_address) and \
                 mod9710(iso13616Prepare(iban_address)) == 1:
             return True
 
@@ -146,7 +146,7 @@ class Iban:
         @param {Object} options, required options are "institution" and "identifier"
         @return {Iban} the IBAN object
         """
-        return Iban.fromBban("ETH" + options["institution"] + options["identifier"])
+        return Iban.fromBban("VNS" + options["institution"] + options["identifier"])
 
     isValid = IsValid()
 

@@ -26,13 +26,13 @@ class Admin(Module):
             "admin_setSolc", [solc_path],
         )
 
-    def startRPC(self, host='localhost', port='8545', cors="", apis="eth,net,web3"):
+    def startRPC(self, host='localhost', port='8545', cors="", apis="vns,net,web3"):
         return self.web3.manager.request_blocking(
             "admin_startRPC",
             [host, port, cors, apis],
         )
 
-    def startWS(self, host='localhost', port='8546', cors="", apis="eth,net,web3"):
+    def startWS(self, host='localhost', port='8546', cors="", apis="vns,net,web3"):
         return self.web3.manager.request_blocking(
             "admin_startWS",
             [host, port, cors, apis],

@@ -20,18 +20,18 @@ Probability = collections.namedtuple('Probability', ['gas_price', 'prob'])
 
 
 def _get_avg_block_time(w3, sample_size):
-    latest = w3.eth.getBlock('latest')
+    latest = w3.vns.getBlock('latest')
 
     constrained_sample_size = min(sample_size, latest['number'])
     if constrained_sample_size == 0:
         raise ValidationError('Constrained sample size is 0')
 
-    oldest = w3.eth.getBlock(latest['number'] - constrained_sample_size)
+    oldest = w3.vns.getBlock(latest['number'] - constrained_sample_size)
     return (latest['timestamp'] - oldest['timestamp']) / constrained_sample_size
 
 
 def _get_raw_miner_data(w3, sample_size):
-    latest = w3.eth.getBlock('latest', full_transactions=True)
+    latest = w3.vns.getBlock('latest', full_transactions=True)
 
     for transaction in latest['transactions']:
         yield (latest['miner'], latest['hash'], transaction['gasPrice'])
@@ -44,7 +44,7 @@ def _get_raw_miner_data(w3, sample_size):
 
         # we intentionally trace backwards using parent hashes rather than
         # block numbers to make caching the data easier to implement.
-        block = w3.eth.getBlock(block['parentHash'], full_transactions=True)
+        block = w3.vns.getBlock(block['parentHash'], full_transactions=True)
         for transaction in block['transactions']:
             yield (block['miner'], block['hash'], transaction['gasPrice'])
 

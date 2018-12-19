@@ -161,46 +161,46 @@ transaction_params_transformer = compose(transaction_params_remapper, transactio
 ethereum_tester_middleware = construct_formatting_middleware(
     request_formatters={
         # Eth
-        'eth_getBlockByNumber': apply_formatters_to_args(
+        'vns_getBlockByNumber': apply_formatters_to_args(
             apply_formatter_if(is_not_named_block, to_integer_if_hex),
         ),
-        'eth_getFilterChanges': apply_formatters_to_args(hex_to_integer),
-        'eth_getFilterLogs': apply_formatters_to_args(hex_to_integer),
-        'eth_getBlockTransactionCountByNumber': apply_formatters_to_args(
+        'vns_getFilterChanges': apply_formatters_to_args(hex_to_integer),
+        'vns_getFilterLogs': apply_formatters_to_args(hex_to_integer),
+        'vns_getBlockTransactionCountByNumber': apply_formatters_to_args(
             apply_formatter_if(is_not_named_block, to_integer_if_hex),
         ),
-        'eth_getUncleCountByBlockNumber': apply_formatters_to_args(
+        'vns_getUncleCountByBlockNumber': apply_formatters_to_args(
             apply_formatter_if(is_not_named_block, to_integer_if_hex),
         ),
-        'eth_getTransactionByBlockHashAndIndex': apply_formatters_to_args(
+        'vns_getTransactionByBlockHashAndIndex': apply_formatters_to_args(
             identity,
             to_integer_if_hex,
         ),
-        'eth_getTransactionByBlockNumberAndIndex': apply_formatters_to_args(
+        'vns_getTransactionByBlockNumberAndIndex': apply_formatters_to_args(
             apply_formatter_if(is_not_named_block, to_integer_if_hex),
             to_integer_if_hex,
         ),
-        'eth_getUncleByBlockNumberAndIndex': apply_formatters_to_args(
+        'vns_getUncleByBlockNumberAndIndex': apply_formatters_to_args(
             apply_formatter_if(is_not_named_block, to_integer_if_hex),
             to_integer_if_hex,
         ),
-        'eth_newFilter': apply_formatters_to_args(
+        'vns_newFilter': apply_formatters_to_args(
             filter_params_transformer,
         ),
-        'eth_getLogs': apply_formatters_to_args(
+        'vns_getLogs': apply_formatters_to_args(
             filter_params_transformer,
         ),
-        'eth_sendTransaction': apply_formatters_to_args(
+        'vns_sendTransaction': apply_formatters_to_args(
             transaction_params_transformer,
         ),
-        'eth_estimateGas': apply_formatters_to_args(
+        'vns_estimateGas': apply_formatters_to_args(
             transaction_params_transformer,
         ),
-        'eth_call': apply_formatters_to_args(
+        'vns_call': apply_formatters_to_args(
             transaction_params_transformer,
             apply_formatter_if(is_not_named_block, to_integer_if_hex),
         ),
-        'eth_uninstallFilter': apply_formatters_to_args(hex_to_integer),
+        'vns_uninstallFilter': apply_formatters_to_args(hex_to_integer),
         # EVM
         'evm_revert': apply_formatters_to_args(hex_to_integer),
         # Personal
@@ -210,42 +210,42 @@ ethereum_tester_middleware = construct_formatting_middleware(
         ),
     },
     result_formatters={
-        'eth_getBlockByHash': apply_formatter_if(
+        'vns_getBlockByHash': apply_formatter_if(
             is_dict,
             block_key_remapper,
         ),
-        'eth_getBlockByNumber': apply_formatter_if(
+        'vns_getBlockByNumber': apply_formatter_if(
             is_dict,
             block_key_remapper,
         ),
-        'eth_getBlockTransactionCountByHash': apply_formatter_if(
+        'vns_getBlockTransactionCountByHash': apply_formatter_if(
             is_dict,
             transaction_key_remapper,
         ),
-        'eth_getBlockTransactionCountByNumber': apply_formatter_if(
+        'vns_getBlockTransactionCountByNumber': apply_formatter_if(
             is_dict,
             transaction_key_remapper,
         ),
-        'eth_getTransactionByHash': apply_formatter_if(
+        'vns_getTransactionByHash': apply_formatter_if(
             is_dict,
             compose(transaction_key_remapper, transaction_formatter),
         ),
-        'eth_getTransactionReceipt': apply_formatter_if(
+        'vns_getTransactionReceipt': apply_formatter_if(
             is_dict,
             compose(receipt_key_remapper, receipt_formatter),
         ),
-        'eth_newFilter': integer_to_hex,
-        'eth_newBlockFilter': integer_to_hex,
-        'eth_newPendingTransactionFilter': integer_to_hex,
-        'eth_getLogs': apply_formatter_if(
+        'vns_newFilter': integer_to_hex,
+        'vns_newBlockFilter': integer_to_hex,
+        'vns_newPendingTransactionFilter': integer_to_hex,
+        'vns_getLogs': apply_formatter_if(
             is_array_of_dicts,
             apply_formatter_to_array(log_key_remapper),
         ),
-        'eth_getFilterChanges': apply_formatter_if(
+        'vns_getFilterChanges': apply_formatter_if(
             is_array_of_dicts,
             apply_formatter_to_array(log_key_remapper),
         ),
-        'eth_getFilterLogs': apply_formatter_if(
+        'vns_getFilterLogs': apply_formatter_if(
             is_array_of_dicts,
             apply_formatter_to_array(log_key_remapper),
         ),
@@ -257,11 +257,11 @@ ethereum_tester_middleware = construct_formatting_middleware(
 
 ethereum_tester_fixture_middleware = construct_fixture_middleware({
     # Eth
-    'eth_protocolVersion': '63',
-    'eth_hashrate': 0,
-    'eth_gasPrice': 1,
-    'eth_syncing': False,
-    'eth_mining': False,
+    'vns_protocolVersion': '63',
+    'vns_hashrate': 0,
+    'vns_gasPrice': 1,
+    'vns_syncing': False,
+    'vns_mining': False,
     # Net
     'net_version': '1',
     'net_listening': False,
@@ -270,12 +270,12 @@ ethereum_tester_fixture_middleware = construct_fixture_middleware({
 
 
 def guess_from(web3, transaction):
-    coinbase = web3.eth.coinbase
+    coinbase = web3.vns.coinbase
     if coinbase is not None:
         return coinbase
 
     try:
-        return web3.eth.accounts[0]
+        return web3.vns.accounts[0]
     except KeyError as e:
         # no accounts available to pre-fill, carry on
         pass
@@ -284,7 +284,7 @@ def guess_from(web3, transaction):
 
 
 def guess_gas(web3, transaction):
-    return web3.eth.estimateGas(transaction) * 2
+    return web3.vns.estimateGas(transaction) * 2
 
 
 @curry
@@ -302,7 +302,7 @@ def default_transaction_fields_middleware(make_request, web3):
 
     def middleware(method, params):
         # TODO send call to eth-tester without gas, and remove guess_gas entirely
-        if method == 'eth_call':
+        if method == 'vns_call':
             filled_transaction = pipe(
                 params[0],
                 fill_default_from,
@@ -310,8 +310,8 @@ def default_transaction_fields_middleware(make_request, web3):
             )
             return make_request(method, [filled_transaction] + params[1:])
         elif method in (
-            'eth_estimateGas',
-            'eth_sendTransaction',
+            'vns_estimateGas',
+            'vns_sendTransaction',
         ):
             filled_transaction = pipe(
                 params[0],

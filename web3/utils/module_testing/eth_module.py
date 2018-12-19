@@ -28,14 +28,14 @@ UNKNOWN_HASH = '0xdeadbeef000000000000000000000000000000000000000000000000000000
 
 
 class EthModuleTest:
-    def test_eth_protocolVersion(self, web3):
+    def test_vns_protocolVersion(self, web3):
         protocol_version = web3.version.ethereum
 
         assert is_string(protocol_version)
         assert protocol_version.isdigit()
 
-    def test_eth_syncing(self, web3):
-        syncing = web3.eth.syncing
+    def test_vns_syncing(self, web3):
+        syncing = web3.vns.syncing
 
         assert is_boolean(syncing) or is_dict(syncing)
 
@@ -50,26 +50,26 @@ class EthModuleTest:
             assert is_integer(syncing['currentBlock'])
             assert is_integer(syncing['highestBlock'])
 
-    def test_eth_coinbase(self, web3):
-        coinbase = web3.eth.coinbase
+    def test_vns_coinbase(self, web3):
+        coinbase = web3.vns.coinbase
         assert is_checksum_address(coinbase)
 
-    def test_eth_mining(self, web3):
-        mining = web3.eth.mining
+    def test_vns_mining(self, web3):
+        mining = web3.vns.mining
         assert is_boolean(mining)
 
-    def test_eth_hashrate(self, web3):
-        hashrate = web3.eth.hashrate
+    def test_vns_hashrate(self, web3):
+        hashrate = web3.vns.hashrate
         assert is_integer(hashrate)
         assert hashrate >= 0
 
-    def test_eth_gasPrice(self, web3):
-        gas_price = web3.eth.gasPrice
+    def test_vns_gasPrice(self, web3):
+        gas_price = web3.vns.gasPrice
         assert is_integer(gas_price)
         assert gas_price > 0
 
-    def test_eth_accounts(self, web3):
-        accounts = web3.eth.accounts
+    def test_vns_accounts(self, web3):
+        accounts = web3.vns.accounts
         assert is_list_like(accounts)
         assert len(accounts) != 0
         assert all((
@@ -77,134 +77,134 @@ class EthModuleTest:
             for account
             in accounts
         ))
-        assert web3.eth.coinbase in accounts
+        assert web3.vns.coinbase in accounts
 
-    def test_eth_blockNumber(self, web3):
-        block_number = web3.eth.blockNumber
+    def test_vns_blockNumber(self, web3):
+        block_number = web3.vns.blockNumber
         assert is_integer(block_number)
         assert block_number >= 0
 
-    def test_eth_getBalance(self, web3):
-        coinbase = web3.eth.coinbase
+    def test_vns_getBalance(self, web3):
+        coinbase = web3.vns.coinbase
 
         with pytest.raises(InvalidAddress):
-            web3.eth.getBalance(coinbase.lower())
+            web3.vns.getBalance(coinbase.lower())
 
-        balance = web3.eth.getBalance(coinbase)
+        balance = web3.vns.getBalance(coinbase)
 
         assert is_integer(balance)
         assert balance >= 0
 
-    def test_eth_getStorageAt(self, web3):
-        coinbase = web3.eth.coinbase
+    def test_vns_getStorageAt(self, web3):
+        coinbase = web3.vns.coinbase
 
         with pytest.raises(InvalidAddress):
-            web3.eth.getStorageAt(coinbase.lower(), 0)
+            web3.vns.getStorageAt(coinbase.lower(), 0)
 
-    def test_eth_getTransactionCount(self, web3):
-        coinbase = web3.eth.coinbase
-        transaction_count = web3.eth.getTransactionCount(coinbase)
+    def test_vns_getTransactionCount(self, web3):
+        coinbase = web3.vns.coinbase
+        transaction_count = web3.vns.getTransactionCount(coinbase)
         with pytest.raises(InvalidAddress):
-            web3.eth.getTransactionCount(coinbase.lower())
+            web3.vns.getTransactionCount(coinbase.lower())
 
         assert is_integer(transaction_count)
         assert transaction_count >= 0
 
-    def test_eth_getBlockTransactionCountByHash_empty_block(self, web3, empty_block):
-        transaction_count = web3.eth.getBlockTransactionCount(empty_block['hash'])
+    def test_vns_getBlockTransactionCountByHash_empty_block(self, web3, empty_block):
+        transaction_count = web3.vns.getBlockTransactionCount(empty_block['hash'])
 
         assert is_integer(transaction_count)
         assert transaction_count == 0
 
-    def test_eth_getBlockTransactionCountByNumber_empty_block(self, web3, empty_block):
-        transaction_count = web3.eth.getBlockTransactionCount(empty_block['number'])
+    def test_vns_getBlockTransactionCountByNumber_empty_block(self, web3, empty_block):
+        transaction_count = web3.vns.getBlockTransactionCount(empty_block['number'])
 
         assert is_integer(transaction_count)
         assert transaction_count == 0
 
-    def test_eth_getBlockTransactionCountByHash_block_with_txn(self, web3, block_with_txn):
-        transaction_count = web3.eth.getBlockTransactionCount(block_with_txn['hash'])
+    def test_vns_getBlockTransactionCountByHash_block_with_txn(self, web3, block_with_txn):
+        transaction_count = web3.vns.getBlockTransactionCount(block_with_txn['hash'])
 
         assert is_integer(transaction_count)
         assert transaction_count >= 1
 
-    def test_eth_getBlockTransactionCountByNumber_block_with_txn(self, web3, block_with_txn):
-        transaction_count = web3.eth.getBlockTransactionCount(block_with_txn['number'])
+    def test_vns_getBlockTransactionCountByNumber_block_with_txn(self, web3, block_with_txn):
+        transaction_count = web3.vns.getBlockTransactionCount(block_with_txn['number'])
 
         assert is_integer(transaction_count)
         assert transaction_count >= 1
 
-    def test_eth_getUncleCountByBlockHash(self, web3, empty_block):
-        uncle_count = web3.eth.getUncleCount(empty_block['hash'])
+    def test_vns_getUncleCountByBlockHash(self, web3, empty_block):
+        uncle_count = web3.vns.getUncleCount(empty_block['hash'])
 
         assert is_integer(uncle_count)
         assert uncle_count == 0
 
-    def test_eth_getUncleCountByBlockNumber(self, web3, empty_block):
-        uncle_count = web3.eth.getUncleCount(empty_block['number'])
+    def test_vns_getUncleCountByBlockNumber(self, web3, empty_block):
+        uncle_count = web3.vns.getUncleCount(empty_block['number'])
 
         assert is_integer(uncle_count)
         assert uncle_count == 0
 
-    def test_eth_getCode(self, web3, math_contract):
-        code = web3.eth.getCode(math_contract.address)
+    def test_vns_getCode(self, web3, math_contract):
+        code = web3.vns.getCode(math_contract.address)
         with pytest.raises(InvalidAddress):
-            code = web3.eth.getCode(math_contract.address.lower())
+            code = web3.vns.getCode(math_contract.address.lower())
         assert is_string(code)
         assert len(code) > 2
 
-    def test_eth_sign(self, web3, unlocked_account):
-        signature = web3.eth.sign(unlocked_account, text='Message tö sign. Longer than hash!')
+    def test_vns_sign(self, web3, unlocked_account):
+        signature = web3.vns.sign(unlocked_account, text='Message tö sign. Longer than hash!')
         assert is_bytes(signature)
         assert len(signature) == 32 + 32 + 1
 
         # test other formats
-        hexsign = web3.eth.sign(
+        hexsign = web3.vns.sign(
             unlocked_account,
             hexstr='0x4d6573736167652074c3b6207369676e2e204c6f6e676572207468616e206861736821'
         )
         assert hexsign == signature
 
-        intsign = web3.eth.sign(
+        intsign = web3.vns.sign(
             unlocked_account,
             0x4d6573736167652074c3b6207369676e2e204c6f6e676572207468616e206861736821
         )
         assert intsign == signature
 
-        bytessign = web3.eth.sign(unlocked_account, b'Message t\xc3\xb6 sign. Longer than hash!')
+        bytessign = web3.vns.sign(unlocked_account, b'Message t\xc3\xb6 sign. Longer than hash!')
         assert bytessign == signature
 
-        new_signature = web3.eth.sign(unlocked_account, text='different message is different')
+        new_signature = web3.vns.sign(unlocked_account, text='different message is different')
         assert new_signature != signature
 
-    def test_eth_sendTransaction_addr_checksum_required(self, web3, unlocked_account):
+    def test_vns_sendTransaction_addr_checksum_required(self, web3, unlocked_account):
         non_checksum_addr = unlocked_account.lower()
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
 
         with pytest.raises(InvalidAddress):
             invalid_params = dict(txn_params, **{'from': non_checksum_addr})
-            web3.eth.sendTransaction(invalid_params)
+            web3.vns.sendTransaction(invalid_params)
 
         with pytest.raises(InvalidAddress):
             invalid_params = dict(txn_params, **{'to': non_checksum_addr})
-            web3.eth.sendTransaction(invalid_params)
+            web3.vns.sendTransaction(invalid_params)
 
-    def test_eth_sendTransaction(self, web3, unlocked_account):
+    def test_vns_sendTransaction(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
-        txn = web3.eth.getTransaction(txn_hash)
+        txn_hash = web3.vns.sendTransaction(txn_params)
+        txn = web3.vns.getTransaction(txn_hash)
 
         assert is_same_address(txn['from'], txn_params['from'])
         assert is_same_address(txn['to'], txn_params['to'])
@@ -212,18 +212,18 @@ class EthModuleTest:
         assert txn['gas'] == 21000
         assert txn['gasPrice'] == txn_params['gasPrice']
 
-    def test_eth_sendTransaction_with_nonce(self, web3, unlocked_account):
+    def test_vns_sendTransaction_with_nonce(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
             # Increased gas price to ensure transaction hash different from other tests
-            'gasPrice': web3.eth.gasPrice * 2,
-            'nonce': web3.eth.getTransactionCount(unlocked_account),
+            'gasPrice': web3.vns.gasPrice * 2,
+            'nonce': web3.vns.getTransactionCount(unlocked_account),
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
-        txn = web3.eth.getTransaction(txn_hash)
+        txn_hash = web3.vns.sendTransaction(txn_params)
+        txn = web3.vns.getTransaction(txn_hash)
 
         assert is_same_address(txn['from'], txn_params['from'])
         assert is_same_address(txn['to'], txn_params['to'])
@@ -232,19 +232,19 @@ class EthModuleTest:
         assert txn['gasPrice'] == txn_params['gasPrice']
         assert txn['nonce'] == txn_params['nonce']
 
-    def test_eth_replaceTransaction(self, web3, unlocked_account):
+    def test_vns_replaceTransaction(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
-        txn_params['gasPrice'] = web3.eth.gasPrice * 2
-        replace_txn_hash = web3.eth.replaceTransaction(txn_hash, txn_params)
-        replace_txn = web3.eth.getTransaction(replace_txn_hash)
+        txn_params['gasPrice'] = web3.vns.gasPrice * 2
+        replace_txn_hash = web3.vns.replaceTransaction(txn_hash, txn_params)
+        replace_txn = web3.vns.getTransaction(replace_txn_hash)
 
         assert is_same_address(replace_txn['from'], txn_params['from'])
         assert is_same_address(replace_txn['to'], txn_params['to'])
@@ -252,52 +252,52 @@ class EthModuleTest:
         assert replace_txn['gas'] == 21000
         assert replace_txn['gasPrice'] == txn_params['gasPrice']
 
-    def test_eth_replaceTransaction_non_existing_transaction(self, web3, unlocked_account):
+    def test_vns_replaceTransaction_non_existing_transaction(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
         with pytest.raises(ValueError):
-            web3.eth.replaceTransaction(
+            web3.vns.replaceTransaction(
                 '0x98e8cc09b311583c5079fa600f6c2a3bea8611af168c52e4b60b5b243a441997',
                 txn_params
             )
 
     # auto mine is enabled for this test
-    def test_eth_replaceTransaction_already_mined(self, web3, unlocked_account):
+    def test_vns_replaceTransaction_already_mined(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
-        txn_params['gasPrice'] = web3.eth.gasPrice * 2
+        txn_params['gasPrice'] = web3.vns.gasPrice * 2
         with pytest.raises(ValueError):
-            web3.eth.replaceTransaction(txn_hash, txn_params)
+            web3.vns.replaceTransaction(txn_hash, txn_params)
 
-    def test_eth_replaceTransaction_incorrect_nonce(self, web3, unlocked_account):
+    def test_vns_replaceTransaction_incorrect_nonce(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
-        txn = web3.eth.getTransaction(txn_hash)
+        txn_hash = web3.vns.sendTransaction(txn_params)
+        txn = web3.vns.getTransaction(txn_hash)
 
-        txn_params['gasPrice'] = web3.eth.gasPrice * 2
+        txn_params['gasPrice'] = web3.vns.gasPrice * 2
         txn_params['nonce'] = txn['nonce'] + 1
         with pytest.raises(ValueError):
-            web3.eth.replaceTransaction(txn_hash, txn_params)
+            web3.vns.replaceTransaction(txn_hash, txn_params)
 
-    def test_eth_replaceTransaction_gas_price_too_low(self, web3, unlocked_account):
+    def test_vns_replaceTransaction_gas_price_too_low(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
@@ -305,13 +305,13 @@ class EthModuleTest:
             'gas': 21000,
             'gasPrice': 10,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
         txn_params['gasPrice'] = 9
         with pytest.raises(ValueError):
-            web3.eth.replaceTransaction(txn_hash, txn_params)
+            web3.vns.replaceTransaction(txn_hash, txn_params)
 
-    def test_eth_replaceTransaction_gas_price_defaulting_minimum(self, web3, unlocked_account):
+    def test_vns_replaceTransaction_gas_price_defaulting_minimum(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
@@ -319,15 +319,15 @@ class EthModuleTest:
             'gas': 21000,
             'gasPrice': 10,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
         txn_params.pop('gasPrice')
-        replace_txn_hash = web3.eth.replaceTransaction(txn_hash, txn_params)
-        replace_txn = web3.eth.getTransaction(replace_txn_hash)
+        replace_txn_hash = web3.vns.replaceTransaction(txn_hash, txn_params)
+        replace_txn = web3.vns.getTransaction(replace_txn_hash)
 
         assert replace_txn['gasPrice'] == 11  # minimum gas price
 
-    def test_eth_replaceTransaction_gas_price_defaulting_strategy_higher(self,
+    def test_vns_replaceTransaction_gas_price_defaulting_strategy_higher(self,
                                                                          web3,
                                                                          unlocked_account):
         txn_params = {
@@ -337,19 +337,19 @@ class EthModuleTest:
             'gas': 21000,
             'gasPrice': 10,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
         def higher_gas_price_strategy(web3, txn):
             return 20
 
-        web3.eth.setGasPriceStrategy(higher_gas_price_strategy)
+        web3.vns.setGasPriceStrategy(higher_gas_price_strategy)
 
         txn_params.pop('gasPrice')
-        replace_txn_hash = web3.eth.replaceTransaction(txn_hash, txn_params)
-        replace_txn = web3.eth.getTransaction(replace_txn_hash)
+        replace_txn_hash = web3.vns.replaceTransaction(txn_hash, txn_params)
+        replace_txn = web3.vns.getTransaction(replace_txn_hash)
         assert replace_txn['gasPrice'] == 20  # Strategy provides higher gas price
 
-    def test_eth_replaceTransaction_gas_price_defaulting_strategy_lower(self,
+    def test_vns_replaceTransaction_gas_price_defaulting_strategy_lower(self,
                                                                         web3,
                                                                         unlocked_account):
         txn_params = {
@@ -359,33 +359,33 @@ class EthModuleTest:
             'gas': 21000,
             'gasPrice': 10,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
         def lower_gas_price_strategy(web3, txn):
             return 5
 
-        web3.eth.setGasPriceStrategy(lower_gas_price_strategy)
+        web3.vns.setGasPriceStrategy(lower_gas_price_strategy)
 
         txn_params.pop('gasPrice')
-        replace_txn_hash = web3.eth.replaceTransaction(txn_hash, txn_params)
-        replace_txn = web3.eth.getTransaction(replace_txn_hash)
+        replace_txn_hash = web3.vns.replaceTransaction(txn_hash, txn_params)
+        replace_txn = web3.vns.getTransaction(replace_txn_hash)
         # Strategy provices lower gas price - minimum preferred
         assert replace_txn['gasPrice'] == 11
 
-    def test_eth_modifyTransaction(self, web3, unlocked_account):
+    def test_vns_modifyTransaction(self, web3, unlocked_account):
         txn_params = {
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         }
-        txn_hash = web3.eth.sendTransaction(txn_params)
+        txn_hash = web3.vns.sendTransaction(txn_params)
 
-        modified_txn_hash = web3.eth.modifyTransaction(
+        modified_txn_hash = web3.vns.modifyTransaction(
             txn_hash, gasPrice=(txn_params['gasPrice'] * 2), value=2
         )
-        modified_txn = web3.eth.getTransaction(modified_txn_hash)
+        modified_txn = web3.vns.getTransaction(modified_txn_hash)
 
         assert is_same_address(modified_txn['from'], txn_params['from'])
         assert is_same_address(modified_txn['to'], txn_params['to'])
@@ -410,41 +410,41 @@ class EthModuleTest:
             ),
         ]
     )
-    def test_eth_sendRawTransaction(self,
+    def test_vns_sendRawTransaction(self,
                                     web3,
                                     raw_transaction,
                                     funded_account_for_raw_txn,
                                     expected_hash):
-        txn_hash = web3.eth.sendRawTransaction(raw_transaction)
+        txn_hash = web3.vns.sendRawTransaction(raw_transaction)
         assert txn_hash == web3.toBytes(hexstr=expected_hash)
 
-    def test_eth_call(self, web3, math_contract):
-        coinbase = web3.eth.coinbase
+    def test_vns_call(self, web3, math_contract):
+        coinbase = web3.vns.coinbase
         txn_params = math_contract._prepare_transaction(
             fn_name='add',
             fn_args=(7, 11),
             transaction={'from': coinbase, 'to': math_contract.address},
         )
-        call_result = web3.eth.call(txn_params)
+        call_result = web3.vns.call(txn_params)
         assert is_string(call_result)
         result = decode_single('uint256', call_result)
         assert result == 18
 
-    def test_eth_call_with_0_result(self, web3, math_contract):
-        coinbase = web3.eth.coinbase
+    def test_vns_call_with_0_result(self, web3, math_contract):
+        coinbase = web3.vns.coinbase
         txn_params = math_contract._prepare_transaction(
             fn_name='add',
             fn_args=(0, 0),
             transaction={'from': coinbase, 'to': math_contract.address},
         )
-        call_result = web3.eth.call(txn_params)
+        call_result = web3.vns.call(txn_params)
         assert is_string(call_result)
         result = decode_single('uint256', call_result)
         assert result == 0
 
-    def test_eth_estimateGas(self, web3):
-        coinbase = web3.eth.coinbase
-        gas_estimate = web3.eth.estimateGas({
+    def test_vns_estimateGas(self, web3):
+        coinbase = web3.vns.coinbase
+        gas_estimate = web3.vns.estimateGas({
             'from': coinbase,
             'to': coinbase,
             'value': 1,
@@ -452,100 +452,100 @@ class EthModuleTest:
         assert is_integer(gas_estimate)
         assert gas_estimate > 0
 
-    def test_eth_getBlockByHash(self, web3, empty_block):
-        block = web3.eth.getBlock(empty_block['hash'])
+    def test_vns_getBlockByHash(self, web3, empty_block):
+        block = web3.vns.getBlock(empty_block['hash'])
         assert block['hash'] == empty_block['hash']
 
-    def test_eth_getBlockByHash_not_found(self, web3, empty_block):
-        block = web3.eth.getBlock(UNKNOWN_HASH)
+    def test_vns_getBlockByHash_not_found(self, web3, empty_block):
+        block = web3.vns.getBlock(UNKNOWN_HASH)
         assert block is None
 
-    def test_eth_getBlockByNumber_with_integer(self, web3, empty_block):
-        block = web3.eth.getBlock(empty_block['number'])
+    def test_vns_getBlockByNumber_with_integer(self, web3, empty_block):
+        block = web3.vns.getBlock(empty_block['number'])
         assert block['number'] == empty_block['number']
 
-    def test_eth_getBlockByNumber_latest(self, web3, empty_block):
-        current_block_number = web3.eth.blockNumber
-        block = web3.eth.getBlock('latest')
+    def test_vns_getBlockByNumber_latest(self, web3, empty_block):
+        current_block_number = web3.vns.blockNumber
+        block = web3.vns.getBlock('latest')
         assert block['number'] == current_block_number
 
-    def test_eth_getBlockByNumber_not_found(self, web3, empty_block):
-        block = web3.eth.getBlock(12345)
+    def test_vns_getBlockByNumber_not_found(self, web3, empty_block):
+        block = web3.vns.getBlock(12345)
         assert block is None
 
-    def test_eth_getBlockByNumber_pending(self, web3, empty_block):
-        current_block_number = web3.eth.blockNumber
-        block = web3.eth.getBlock('pending')
+    def test_vns_getBlockByNumber_pending(self, web3, empty_block):
+        current_block_number = web3.vns.blockNumber
+        block = web3.vns.getBlock('pending')
         assert block['number'] == current_block_number + 1
 
-    def test_eth_getBlockByNumber_earliest(self, web3, empty_block):
-        genesis_block = web3.eth.getBlock(0)
-        block = web3.eth.getBlock('earliest')
+    def test_vns_getBlockByNumber_earliest(self, web3, empty_block):
+        genesis_block = web3.vns.getBlock(0)
+        block = web3.vns.getBlock('earliest')
         assert block['number'] == 0
         assert block['hash'] == genesis_block['hash']
 
-    def test_eth_getBlockByNumber_full_transactions(self, web3, block_with_txn):
-        block = web3.eth.getBlock(block_with_txn['number'], True)
+    def test_vns_getBlockByNumber_full_transactions(self, web3, block_with_txn):
+        block = web3.vns.getBlock(block_with_txn['number'], True)
         transaction = block['transactions'][0]
         assert transaction['hash'] == block_with_txn['transactions'][0]
 
-    def test_eth_getTransactionByHash(self, web3, mined_txn_hash):
-        transaction = web3.eth.getTransaction(mined_txn_hash)
+    def test_vns_getTransactionByHash(self, web3, mined_txn_hash):
+        transaction = web3.vns.getTransaction(mined_txn_hash)
         assert is_dict(transaction)
         assert transaction['hash'] == HexBytes(mined_txn_hash)
 
-    def test_eth_getTransactionByHash_contract_creation(self,
+    def test_vns_getTransactionByHash_contract_creation(self,
                                                         web3,
                                                         math_contract_deploy_txn_hash):
-        transaction = web3.eth.getTransaction(math_contract_deploy_txn_hash)
+        transaction = web3.vns.getTransaction(math_contract_deploy_txn_hash)
         assert is_dict(transaction)
         assert transaction['to'] is None, "to field is %r" % transaction['to']
 
-    def test_eth_getTransactionFromBlockHashAndIndex(self, web3, block_with_txn, mined_txn_hash):
-        transaction = web3.eth.getTransactionFromBlock(block_with_txn['hash'], 0)
+    def test_vns_getTransactionFromBlockHashAndIndex(self, web3, block_with_txn, mined_txn_hash):
+        transaction = web3.vns.getTransactionFromBlock(block_with_txn['hash'], 0)
         assert is_dict(transaction)
         assert transaction['hash'] == HexBytes(mined_txn_hash)
 
-    def test_eth_getTransactionFromBlockNumberAndIndex(self, web3, block_with_txn, mined_txn_hash):
-        transaction = web3.eth.getTransactionFromBlock(block_with_txn['number'], 0)
+    def test_vns_getTransactionFromBlockNumberAndIndex(self, web3, block_with_txn, mined_txn_hash):
+        transaction = web3.vns.getTransactionFromBlock(block_with_txn['number'], 0)
         assert is_dict(transaction)
         assert transaction['hash'] == HexBytes(mined_txn_hash)
 
-    def test_eth_getTransactionByBlockHashAndIndex(self, web3, block_with_txn, mined_txn_hash):
-        transaction = web3.eth.getTransactionByBlock(block_with_txn['hash'], 0)
+    def test_vns_getTransactionByBlockHashAndIndex(self, web3, block_with_txn, mined_txn_hash):
+        transaction = web3.vns.getTransactionByBlock(block_with_txn['hash'], 0)
         assert is_dict(transaction)
         assert transaction['hash'] == HexBytes(mined_txn_hash)
 
-    def test_eth_getTransactionByBlockNumberAndIndex(self, web3, block_with_txn, mined_txn_hash):
-        transaction = web3.eth.getTransactionByBlock(block_with_txn['number'], 0)
+    def test_vns_getTransactionByBlockNumberAndIndex(self, web3, block_with_txn, mined_txn_hash):
+        transaction = web3.vns.getTransactionByBlock(block_with_txn['number'], 0)
         assert is_dict(transaction)
         assert transaction['hash'] == HexBytes(mined_txn_hash)
 
-    def test_eth_getTransactionReceipt_mined(self, web3, block_with_txn, mined_txn_hash):
-        receipt = web3.eth.getTransactionReceipt(mined_txn_hash)
+    def test_vns_getTransactionReceipt_mined(self, web3, block_with_txn, mined_txn_hash):
+        receipt = web3.vns.getTransactionReceipt(mined_txn_hash)
         assert is_dict(receipt)
         assert receipt['blockNumber'] == block_with_txn['number']
         assert receipt['blockHash'] == block_with_txn['hash']
         assert receipt['transactionIndex'] == 0
         assert receipt['transactionHash'] == HexBytes(mined_txn_hash)
 
-    def test_eth_getTransactionReceipt_unmined(self, web3, unlocked_account):
-        txn_hash = web3.eth.sendTransaction({
+    def test_vns_getTransactionReceipt_unmined(self, web3, unlocked_account):
+        txn_hash = web3.vns.sendTransaction({
             'from': unlocked_account,
             'to': unlocked_account,
             'value': 1,
             'gas': 21000,
-            'gasPrice': web3.eth.gasPrice,
+            'gasPrice': web3.vns.gasPrice,
         })
-        receipt = web3.eth.getTransactionReceipt(txn_hash)
+        receipt = web3.vns.getTransactionReceipt(txn_hash)
         assert receipt is None
 
-    def test_eth_getTransactionReceipt_with_log_entry(self,
+    def test_vns_getTransactionReceipt_with_log_entry(self,
                                                       web3,
                                                       block_with_txn_with_log,
                                                       emitter_contract,
                                                       txn_hash_with_log):
-        receipt = web3.eth.getTransactionReceipt(txn_hash_with_log)
+        receipt = web3.vns.getTransactionReceipt(txn_hash_with_log)
         assert is_dict(receipt)
         assert receipt['blockNumber'] == block_with_txn_with_log['number']
         assert receipt['blockHash'] == block_with_txn_with_log['hash']
@@ -562,84 +562,84 @@ class EthModuleTest:
         assert log_entry['transactionIndex'] == 0
         assert log_entry['transactionHash'] == HexBytes(txn_hash_with_log)
 
-    def test_eth_getUncleByBlockHashAndIndex(self, web3):
+    def test_vns_getUncleByBlockHashAndIndex(self, web3):
         # TODO: how do we make uncles....
         pass
 
-    def test_eth_getUncleByBlockNumberAndIndex(self, web3):
+    def test_vns_getUncleByBlockNumberAndIndex(self, web3):
         # TODO: how do we make uncles....
         pass
 
-    def test_eth_getCompilers(self, web3):
+    def test_vns_getCompilers(self, web3):
         # TODO: do we want to test this?
         pass
 
-    def test_eth_compileSolidity(self, web3):
+    def test_vns_compileSolidity(self, web3):
         # TODO: do we want to test this?
         pass
 
-    def test_eth_compileLLL(self, web3):
+    def test_vns_compileLLL(self, web3):
         # TODO: do we want to test this?
         pass
 
-    def test_eth_compileSerpent(self, web3):
+    def test_vns_compileSerpent(self, web3):
         # TODO: do we want to test this?
         pass
 
-    def test_eth_newFilter(self, web3):
-        filter = web3.eth.filter({})
+    def test_vns_newFilter(self, web3):
+        filter = web3.vns.filter({})
 
-        changes = web3.eth.getFilterChanges(filter.filter_id)
+        changes = web3.vns.getFilterChanges(filter.filter_id)
         assert is_list_like(changes)
         assert not changes
 
-        logs = web3.eth.getFilterLogs(filter.filter_id)
+        logs = web3.vns.getFilterLogs(filter.filter_id)
         assert is_list_like(logs)
         assert not logs
 
-        result = web3.eth.uninstallFilter(filter.filter_id)
+        result = web3.vns.uninstallFilter(filter.filter_id)
         assert result is True
 
-    def test_eth_newBlockFilter(self, web3):
-        filter = web3.eth.filter('latest')
+    def test_vns_newBlockFilter(self, web3):
+        filter = web3.vns.filter('latest')
         assert is_string(filter.filter_id)
 
-        changes = web3.eth.getFilterChanges(filter.filter_id)
+        changes = web3.vns.getFilterChanges(filter.filter_id)
         assert is_list_like(changes)
         assert not changes
 
         # TODO: figure out why this fails in go-ethereum
-        # logs = web3.eth.getFilterLogs(filter.filter_id)
+        # logs = web3.vns.getFilterLogs(filter.filter_id)
         # assert is_list_like(logs)
         # assert not logs
 
-        result = web3.eth.uninstallFilter(filter.filter_id)
+        result = web3.vns.uninstallFilter(filter.filter_id)
         assert result is True
 
-    def test_eth_newPendingTransactionFilter(self, web3):
-        filter = web3.eth.filter('pending')
+    def test_vns_newPendingTransactionFilter(self, web3):
+        filter = web3.vns.filter('pending')
         assert is_string(filter.filter_id)
 
-        changes = web3.eth.getFilterChanges(filter.filter_id)
+        changes = web3.vns.getFilterChanges(filter.filter_id)
         assert is_list_like(changes)
         assert not changes
 
         # TODO: figure out why this fails in go-ethereum
-        # logs = web3.eth.getFilterLogs(filter.filter_id)
+        # logs = web3.vns.getFilterLogs(filter.filter_id)
         # assert is_list_like(logs)
         # assert not logs
 
-        result = web3.eth.uninstallFilter(filter.filter_id)
+        result = web3.vns.uninstallFilter(filter.filter_id)
         assert result is True
 
-    def test_eth_getLogs_without_logs(self, web3, block_with_txn_with_log):
+    def test_vns_getLogs_without_logs(self, web3, block_with_txn_with_log):
         # Test with block range
 
         filter_params = {
             "fromBlock": 0,
             "toBlock": block_with_txn_with_log['number'] - 1,
         }
-        result = web3.eth.getLogs(filter_params)
+        result = web3.vns.getLogs(filter_params)
         assert len(result) == 0
 
         # the range is wrong
@@ -647,7 +647,7 @@ class EthModuleTest:
             "fromBlock": block_with_txn_with_log['number'],
             "toBlock": block_with_txn_with_log['number'] - 1,
         }
-        result = web3.eth.getLogs(filter_params)
+        result = web3.vns.getLogs(filter_params)
         assert len(result) == 0
 
         # Test with `address`
@@ -657,10 +657,10 @@ class EthModuleTest:
             "fromBlock": 0,
             "address": UNKNOWN_ADDRESS,
         }
-        result = web3.eth.getLogs(filter_params)
+        result = web3.vns.getLogs(filter_params)
         assert len(result) == 0
 
-    def test_eth_getLogs_with_logs(
+    def test_vns_getLogs_with_logs(
             self,
             web3,
             block_with_txn_with_log,
@@ -684,14 +684,14 @@ class EthModuleTest:
             "fromBlock": block_with_txn_with_log['number'],
             "toBlock": block_with_txn_with_log['number'],
         }
-        result = web3.eth.getLogs(filter_params)
+        result = web3.vns.getLogs(filter_params)
         assert_contains_log(result)
 
         # specify only `from_block`. by default `to_block` should be 'latest'
         filter_params = {
             "fromBlock": 0,
         }
-        result = web3.eth.getLogs(filter_params)
+        result = web3.vns.getLogs(filter_params)
         assert_contains_log(result)
 
         # Test with `address`
@@ -701,11 +701,11 @@ class EthModuleTest:
             "fromBlock": 0,
             "address": emitter_contract.address,
         }
-        result = web3.eth.getLogs(filter_params)
+        result = web3.vns.getLogs(filter_params)
         assert_contains_log(result)
 
-    def test_eth_call_old_contract_state(self, web3, math_contract, unlocked_account):
-        start_block = web3.eth.getBlock('latest')
+    def test_vns_call_old_contract_state(self, web3, math_contract, unlocked_account):
+        start_block = web3.vns.getBlock('latest')
         block_num = start_block.number
         block_hash = start_block.hash
 
@@ -731,12 +731,12 @@ class EthModuleTest:
         if pending_call_result != 1:
             raise AssertionError("pending call result was %d instead of 1" % pending_call_result)
 
-    def test_eth_uninstallFilter(self, web3):
-        filter = web3.eth.filter({})
+    def test_vns_uninstallFilter(self, web3):
+        filter = web3.vns.filter({})
         assert is_string(filter.filter_id)
 
-        success = web3.eth.uninstallFilter(filter.filter_id)
+        success = web3.vns.uninstallFilter(filter.filter_id)
         assert success is True
 
-        failure = web3.eth.uninstallFilter(filter.filter_id)
+        failure = web3.vns.uninstallFilter(filter.filter_id)
         assert failure is False

@@ -108,3 +108,5 @@ fabric.properties
 
 # VS Code
 .vscode/
+
+__pycache__

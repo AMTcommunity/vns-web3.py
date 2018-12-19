@@ -450,7 +450,7 @@ class Contract:
     @deprecated_for("contract.<functions/events>.<method name>.call")
     def call(self, transaction=None):
         """
-        Execute a contract function call using the `eth_call` interface.
+        Execute a contract function call using the `vns_call` interface.
 
         This method prepares a ``Caller`` object that exposes the contract
         functions and public variables as callable Python functions.
@@ -459,7 +459,7 @@ class Contract:
 
         .. code-block:: python
 
-            ContractFactory = w3.eth.contract(
+            ContractFactory = w3.vns.contract(
                 abi=wallet_contract_definition["abi"]
             )
 
@@ -520,7 +520,7 @@ class Contract:
     @deprecated_for("contract.<functions/events>.<method name>.transact")
     def transact(self, transaction=None):
         """
-        Execute a contract function call using the `eth_sendTransaction`
+        Execute a contract function call using the `vns_sendTransaction`
         interface.
 
         You should specify the account that pays the gas for this transaction
@@ -538,11 +538,11 @@ class Contract:
             # * Wallet.withdraw(address amount)
 
             >>> wallet = Wallet(address='0xDc3A9Db694BCdd55EBaE4A89B22aC6D12b3F0c24')
-            # Deposit to the `web3.eth.coinbase` account.
+            # Deposit to the `web3.vns.coinbase` account.
             >>> wallet.functions.deposit().transact({'value': 12345})
             '0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060'
-            # Deposit to some other account using funds from `web3.eth.coinbase`.
-            >>> wallet.functions.deposit(web3.eth.accounts[1]).transact({'value': 54321})
+            # Deposit to some other account using funds from `web3.vns.coinbase`.
+            >>> wallet.functions.deposit(web3.vns.accounts[1]).transact({'value': 54321})
             '0xe122ba26d25a93911e241232d3ba7c76f5a6bfe9f8038b66b198977115fb1ddf'
             # Withdraw 12345 wei.
             >>> wallet.functions.withdraw(12345).transact()
@@ -899,11 +899,11 @@ class ConciseContract:
 
     This call
 
-    > contract.withdraw(amount, transact={'from': eth.accounts[1], 'gas': 100000, ...})
+    > contract.withdraw(amount, transact={'from': vns.accounts[1], 'gas': 100000, ...})
 
     is equivalent to this call in the classic contract:
 
-    > contract.functions.withdraw(amount).transact({'from': eth.accounts[1], 'gas': 100000, ...})
+    > contract.functions.withdraw(amount).transact({'from': vns.accounts[1], 'gas': 100000, ...})
     '''
     def __init__(self, classic_contract, method_class=ConciseMethod):
 
@@ -1044,7 +1044,7 @@ class ContractFunction:
 
     def call(self, transaction=None, block_identifier='latest'):
         """
-        Execute a contract function call using the `eth_call` interface.
+        Execute a contract function call using the `vns_call` interface.
 
         This method prepares a ``Caller`` object that exposes the contract
         functions and public variables as callable Python functions.
@@ -1053,7 +1053,7 @@ class ContractFunction:
 
         .. code-block:: python
 
-            ContractFactory = w3.eth.contract(
+            ContractFactory = w3.vns.contract(
                 abi=wallet_contract_definition["abi"]
             )
 
@@ -1336,7 +1336,7 @@ def call_contract_function(
         **kwargs):
     """
     Helper function for interacting with a contract function using the
-    `eth_call` API.
+    `vns_call` API.
     """
     call_transaction = prepare_transaction(
         address,
@@ -1363,7 +1363,7 @@ def call_contract_function(
         output_data = decode_abi(output_types, return_data)
     except DecodingError as e:
         # Provide a more helpful error message than the one provided by
-        # eth-abi-utils
+        # vns-abi-utils
         is_missing_code_error = (
             return_data in ACCEPTABLE_EMPTY_STRINGS and
             web3.vns.getCode(address) in ACCEPTABLE_EMPTY_STRINGS
