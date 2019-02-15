@@ -52,7 +52,7 @@ class PersistentWebSocket:
 
 
 class WebsocketProvider(JSONBaseProvider):
-    logger = logging.getLogger("web3.providers.WebsocketProvider")
+    logger = logging.getLogger("vns_web3.providers.WebsocketProvider")
     _loop = None
 
     def __init__(self, endpoint_uri=None):

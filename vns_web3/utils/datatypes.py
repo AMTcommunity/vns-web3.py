@@ -28,7 +28,7 @@ class PropertyCheckingFactory(type):
             verify_key_attr(concat(base.__dict__.keys() for base in all_bases))
 
         if normalizers:
-            processed_namespace = web3.utils.formatters.apply_formatters_to_dict(
+            processed_namespace = vns_web3.utils.formatters.apply_formatters_to_dict(
                 normalizers,
                 namespace)
         else:

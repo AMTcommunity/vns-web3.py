@@ -28,7 +28,7 @@ def get_default_endpoint():
 
 
 class HTTPProvider(JSONBaseProvider):
-    logger = logging.getLogger("web3.providers.HTTPProvider")
+    logger = logging.getLogger("vns_web3.providers.HTTPProvider")
     endpoint_uri = None
     _request_args = None
     _request_kwargs = None

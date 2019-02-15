@@ -19,7 +19,7 @@ from hexbytes import (
     HexBytes,
 )
 
-from web3.exceptions import (
+from vns_web3.exceptions import (
     InvalidAddress,
 )
 

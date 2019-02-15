@@ -4,18 +4,18 @@ from hexbytes import (
     HexBytes,
 )
 
-from web3 import Web3
-from web3.exceptions import (
+from vns_web3 import Web3
+from vns_web3.exceptions import (
     InvalidAddress,
 )
-from web3.utils.ens import (
+from vns_web3.utils.ens import (
     ens_addresses,
 )
 
 
 class Web3ModuleTest:
     def test_web3_clientVersion(self, web3):
-        client_version = web3.version.node
+        client_version =  .version.node
         self._check_web3_clientVersion(client_version)
 
     def _check_web3_clientVersion(self, client_version):

@@ -111,7 +111,7 @@ class EthereumTesterProvider(BaseProvider):
         ethereum_tester_personal_remapper_middleware,
     ]
 
-    @deprecated_for("web3.providers.eth_tester.EthereumTesterProvider")
+    @deprecated_for("vns_web3.providers.eth_tester.EthereumTesterProvider")
     def __init__(self,
                  *args,
                  **kwargs):
@@ -143,7 +143,7 @@ class EthereumTesterProvider(BaseProvider):
 class TestRPCProvider(HTTPProvider):
     middlewares = [ethtestrpc_middleware, ethtestrpc_exception_middleware]
 
-    @deprecated_for("web3.providers.eth_tester.EthereumTesterProvider")
+    @deprecated_for("vns_web3.providers.eth_tester.EthereumTesterProvider")
     def __init__(self, host="127.0.0.1", port=8545, *args, **kwargs):
         if not is_testrpc_available():
             raise Exception("`TestRPCProvider` requires the `eth-testrpc` package to be installed")

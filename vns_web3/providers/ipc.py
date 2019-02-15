@@ -137,7 +137,7 @@ def get_default_ipc_path(testnet=False):
 
 
 class IPCProvider(JSONBaseProvider):
-    logger = logging.getLogger("web3.providers.IPCProvider")
+    logger = logging.getLogger("vns_web3.providers.IPCProvider")
     _socket = None
 
     def __init__(self, ipc_path=None, testnet=False, timeout=10, *args, **kwargs):
