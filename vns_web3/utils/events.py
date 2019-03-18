@@ -155,8 +155,8 @@ def get_event_data(event_abi, log_entry):
         log_topics = log_entry['topics']
     elif not log_entry['topics']:
         raise MismatchedABI("Expected non-anonymous event to have 1 or more topics")
-    elif event_abi_to_log_topic(event_abi) != log_entry['topics'][0]:
-        raise MismatchedABI("The event signature did not match the provided ABI")
+    # elif event_abi_to_log_topic(event_abi) != log_entry['topics'][0]:
+    #     raise MismatchedABI("The event signature did not match the provided ABI")
     else:
         log_topics = log_entry['topics'][1:]
 
